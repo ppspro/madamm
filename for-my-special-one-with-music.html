@@ -254,7 +254,7 @@
       background: #fff3fa;
       font-family: inherit;
     }
-    #generate-poem-and-speak { /* Renamed button ID */
+    #generate-poem-and-speak {
         margin-top: 5px;
     }
     #poem-output {
@@ -314,7 +314,7 @@
       border-radius: 12px;
       position: relative; margin: 0 auto 24px;
       cursor: pointer;
-      transition: all 0.36s;
+      transition: all: 0.36s;
       display: flex; justify-content: center; align-items: center;
       overflow: hidden;
       box-shadow: 0 8px 32px #e91e6368;
@@ -322,7 +322,7 @@
     .gift-box:hover { transform: scale(1.08);}
     .gift-box::before {
       content: '🎁'; font-size: 4.6rem;
-      transition: all 0.45s;
+      transition: all: 0.45s;
     }
     .gift-box.opened::before {
       content: '❤️'; font-size: 5.1rem; animation: pulse 1.4s infinite;
@@ -334,7 +334,7 @@
       display: inline-block; width: 22px; height: 22px;
       background: #e91e63; color: white; text-align: center;
       line-height: 22px; margin: 0 1.5px; cursor: pointer;
-      transition: all 0.3s;
+      transition: all: 0.3s;
       border-radius: 5px;
       font-size: 1.13rem;
       box-shadow: 0 1px 4px #e91e6366;
@@ -357,14 +357,14 @@
     .modal {
       position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
       background: rgba(0,0,0,0.45); display: flex; justify-content: center; align-items: center;
-      z-index: 2000; opacity: 0; visibility: hidden; transition: all 0.26s;
+      z-index: 2000; opacity: 0; visibility: hidden; transition: all: 0.26s;
     }
     .modal.active { opacity: 1; visibility: visible;}
     .modal-content {
       background: white; border-radius: 15px; padding: 40px 24px; max-width: 82vw; max-height: 80vh;
       overflow-y: auto; position: relative;
       box-shadow: 0 10px 40px rgba(0,0,0,0.21);
-      transform: scale(0.7); transition: all 0.25s;
+      transform: scale(0.7); transition: all: 0.25s;
     }
     .modal.active .modal-content { transform: scale(1);}
     .modal-close {
@@ -396,9 +396,15 @@
       transition: background 0.22s;
     }
     .music-button:hover { background: #c2185b;}
-    .music-title { font-size: 1rem; color: #333; display: none;}
+    .track-button {
+      width: 30px; height: 30px; border-radius: 50%; background: #e91e63;
+      border: none; color: white; font-size: 0.9rem; cursor: pointer;
+      display: flex; justify-content: center; align-items: center;
+      transition: background 0.22s;
+    }
+    .track-button:hover { background: #c2185b;}
+    .music-title { font-size: 1rem; color: #333; max-width: 120px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
     .music-title.active { display: block;}
-
     /* --- Responsive --- */
     @media (max-width: 900px) {
       .hero-content { padding: 25px;}
@@ -416,6 +422,8 @@
       .booth-controls { flex-direction: column;}
       .modal-content { padding: 16px; width: 94vw;}
       .photo-booth, .quiz-container, .gift-container { max-width: 97vw;}
+      .music-player { flex-wrap: wrap; padding: 8px 12px;}
+      .music-title { max-width: 80px;}
     }
     /* --- Animations --- */
     @keyframes fadeIn {
@@ -478,35 +486,38 @@
       <div class="section-content">
         <div class="memories-grid">
           <div class="memory-card" data-date="2023-02-14">
-            <img class="memory-img" src="https://images.unsplash.com/photo-1519741497674-611481863552" alt="First Meeting">
+            <img class="memory-img" src="https://i.ibb.co/hFXYchh0/raw.png" alt="First Meeting">
             <div class="memory-title">Our First Meeting</div>
           </div>
           <div class="memory-card" data-date="2023-03-20">
-            <img class="memory-img" src="https://images.unsplash.com/photo-1518895949257-7621c3c786d7" alt="Special Moment">
+            <img class="memory-img" src="https://i.ibb.co/DfLM5Pxt/Pi7-Image-Cropper.webp"
+            alt="Special Moment">
             <div class="memory-title">That Special Moment</div>
           </div>
           <div class="memory-card" data-date="2023-04-15">
-            <img class="memory-img" src="https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae" alt="Favorite Song">
-            <div class="memory-title">Our Favorite Song</div>
+            <img class="memory-img" src="https://images.unsplash.com/photo-1567095761054-7a02e69e5c43" alt="Favorite Song">
+            <div class="memory-title">Tum Hi Ho</div>
           </div>
           <div class="memory-card" data-date="2023-05-10">
-            <img class="memory-img" src="https://images.unsplash.com/photo-1506744038136-46273834b3fb" alt="Under the Stars">
+            <img class="memory-img" src="https://i.ibb.co/zTvt8JZr/IMG-20250330-WA0005.jpg" alt="Under the Stars">
             <div class="memory-title">Under the Stars</div>
           </div>
           <div class="memory-card" data-date="2023-07-15">
-            <img class="memory-img" src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d" alt="Birthday Surprise">
+            <img class="memory-img" src="https://i.ibb.co/wmk9W2W/hershey-s-exotic-dark-blueberry-acai-flavoured-center-chocolate-100-g-product-images-o491335886-p590.jpg" 
+            alt="Birthday Surprise">
             <div class="memory-title">Birthday Surprise</div>
           </div>
           <div class="memory-card" data-date="2023-09-22">
-            <img class="memory-img" src="https://images.unsplash.com/photo-1514477917009-4f2c4b46d7a9" alt="Coffee Date">
+            <img class="memory-img" src="https://i.ibb.co/FMBRjQm/Chat-GPTImage-May11202506-49-36-PM.jpg" 
+            alt="Coffee Date">
             <div class="memory-title">Coffee Date</div>
           </div>
           <div class="memory-card" data-date="2023-10-10">
-            <img class="memory-img" src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308" alt="Special Surprises">
+            <img class="memory-img" src="https://i.ibb.co/d0mB0g40/71-AXI2jyj-L-SX679.jpg" alt="Special Surprises">
             <div class="memory-title">Special Surprises</div>
           </div>
           <div class="memory-card" data-date="2023-12-31">
-            <img class="memory-img" src="https://images.unsplash.com/photo-1483794344538-d0d032bb7bc7" alt="New Year's Eve">
+            <img class="memory-img" src="https://i.ibb.co/JFnq3g1h/IMG-20250330-WA0001.jpg" alt="New Year's Eve">
             <div class="memory-title">New Year's Eve</div>
           </div>
         </div>
@@ -559,16 +570,17 @@
           <div class="booth-frame">
             <div class="booth-content" id="booth-content">
               <div class="slideshow-container">
-                <img class="slide" src="https://images.unsplash.com/photo-1519741497674-611481863552" alt="Memory 1">
-                <img class="slide" src="https://images.unsplash.com/photo-1518895949257-7621c3c786d7" alt="Memory 2">
-                <img class="slide" src="https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae" alt="Memory 3">
-                <img class="slide" src="https://images.unsplash.com/photo-1506744038136-46273834b3fb" alt="Memory 4">
+                 <img class="slide" src="https://i.ibb.co/YTP5YLfc/IMG-20250329-WA0005.jpg" alt="Memory 1">
+                <img class="slide" src="https://i.ibb.co/yF55HG5J/IMG-20250329-WA0013.jpg" alt="Memory 2">
+                <img class="slide" src="https://i.ibb.co/dJcj4VB0/IMG-20250329-WA0002.jpg" alt="Memory 3">
+                <img class="slide" src="https://i.ibb.co/350rtb9S/photo-2025-05-11-17-53-34.jpg" alt="Memory 4">
                 <img class="slide" src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d" alt="Memory 5">
-                <img class="slide" src="https://images.unsplash.com/photo-1514477917009-4f2c4b46d7a9" alt="Memory 6">
-                <img class="slide" src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308" alt="Memory 7">
-                <img class="slide" src="https://images.unsplash.com/photo-1483794344538-d0d032bb7bc7" alt="Memory 8">
-                <img class="slide" src="https://images.unsplash.com/photo-1518791841217-8f162f1e1131" alt="Memory 9">
-                <img class="slide" src="https://images.unsplash.com/photo-1521737604893-d990f900ce0b" alt="Memory 10">
+                <img class="slide" src="https://i.ibb.co/W4RPJVmM/photo-2025-05-11-17-51-40.jpg" alt="Memory 6">
+                <img class="slide" src="https://images.unsplash.com/photo-1518621736915-f3b1c41bfd00" alt="Memory 7">
+                <img class="slide" src="https://i.ibb.co/JFnq3g1h/IMG-20250330-WA0001.jpg" alt="Memory 8">
+                <img class="slide" src="https://i.ibb.co/VcG1pkXB/photo-2025-05-11-17-51-34.jpg" alt="Memory 9">
+                <img class="slide" src="https://i.ibb.co/FkT4H8Dv/image-1746938718780.jpg" 
+                alt="Memory 10">
               </div>
             </div>
           </div>
@@ -625,8 +637,10 @@
     </div>
   </div>
   <div class="music-player">
-    <span class="music-title" id="music-title">Love Song</span>
+    <span class="music-title" id="music-title">Beqarar Yeh Dil</span>
+    <button class="track-button" id="prev-track">⏮</button>
     <button class="music-button" id="music-button">♪</button>
+    <button class="track-button" id="next-track">⏭</button>
   </div>
   <script>
     // Quiz questions as provided
@@ -667,11 +681,10 @@
 
     // --- Gemini API Configuration ---
     // WARNING: Exposing API keys in client-side code is insecure for public websites.
-    // This is for demonstration purposes only. Use a backend for production.
-    const GEMINI_API_KEY = 'YOUR_ACTUAL_API_KEY_HERE'; // <<< REPLACE THIS
+    // Replace with your actual Gemini API key and consider moving to a backend proxy for production.
+    const GEMINI_API_KEY = 'AIzaSyBdxK_Am1Jr6jyADGui2UZFOD-buWFro_0'; // <<< Replace with your actual Gemini API key
     const MODEL_NAME = "gemini-1.5-flash-latest"; // Or "gemini-1.0-pro" if flash isn't working for you
     const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${GEMINI_API_KEY}`;
-
 
     document.addEventListener('DOMContentLoaded', function() {
       // DOM elements
@@ -685,7 +698,7 @@
       const quizResult = document.getElementById('quiz-result');
       const resultTitle = document.getElementById('result-title');
       const resultMessage = document.getElementById('result-message');
-      const generatePoemAndSpeakBtn = document.getElementById('generate-poem-and-speak'); // Updated ID
+      const generatePoemAndSpeakBtn = document.getElementById('generate-poem-and-speak');
       const poemOutputDiv = document.getElementById('poem-output');
       const boothContent = document.getElementById('booth-content');
       const addHeartBtn = document.getElementById('add-heart');
@@ -701,6 +714,8 @@
       const modalClose = document.getElementById('modal-close');
       const musicButton = document.getElementById('music-button');
       const musicTitle = document.getElementById('music-title');
+      const prevTrackBtn = document.getElementById('prev-track');
+      const nextTrackBtn = document.getElementById('next-track');
       const confettiCanvas = document.getElementById('confetti-canvas');
 
       // Confetti setup
@@ -711,11 +726,41 @@
       let confettiAnimationId;
 
       // Audio setup for background music
-      let bgAudio = new Audio('https://raw.githubusercontent.com/0motivational/tiuti8/refs/heads/main/Beqarar%20Yeh%20Dil%20Ringtone%201%20-%20(Ringtonedkhr.com).mp3');
+      const tracks = [
+        {
+          url: 'https://raw.githubusercontent.com/0motivational/tiuti8/refs/heads/main/Beqarar%20Yeh%20Dil%20Ringtone%201%20-%20(Ringtonedkhr.com).mp3',
+          title: 'Beqarar Yeh Dil'
+        },
+        {
+          url: 'https://dl.prokerala.com/downloads/ringtones/files/dl/mp3/tum-hi-ho-aashiqui-2-musiclinda-com-1074.mp3',
+          title: 'Tum Hi Ho'
+        },
+        {
+          url: 'https://ppsatapathy.github.io/music/samohini.mp3',
+          title: 'Samohini'
+        }
+        {
+          url: 'https://www.iringwave.com/wp-content/uploads/2024/05/Kabhi-Jo-Badal-Barse-Ringtone-iRingweve.com_.mp3',
+          title: 'Kabhi-Jo-Badal-Barse'
+        }
+        {
+          url: 'https://downloadwap.com/content3/mp3tones/rtones/new/bollywood/kabhi_kabhi_aditi_zindagi-119629.mp3',
+          title: 'kabhi_kabhi_aditi_'
+        }
+
+      ];
+      let currentTrackIndex = 0;
+      let bgAudio = new Audio(tracks[currentTrackIndex].url);
       bgAudio.loop = true;
+      musicTitle.textContent = tracks[currentTrackIndex].title;
+      musicTitle.classList.add('active');
+
       bgAudio.onerror = () => {
-        musicTitle.textContent = 'BG Audio Unavailable';
-        console.warn("Background audio playback error. Check network or MP3 link.");
+        musicTitle.textContent = `${tracks[currentTrackIndex].title} Unavailable`;
+        console.warn(`Audio playback error for ${tracks[currentTrackIndex].title}. Check network or URL.`);
+        setTimeout(() => {
+          musicTitle.textContent = tracks[currentTrackIndex].title;
+        }, 3000);
       };
 
       // Speech Synthesis
@@ -723,15 +768,13 @@
       let voices = [];
       function loadVoices() {
           voices = window.speechSynthesis.getVoices();
-          // console.log("Voices loaded:", voices);
       }
       if ('speechSynthesis' in window) {
-          loadVoices(); // Initial load
+          loadVoices();
           if (window.speechSynthesis.onvoiceschanged !== undefined) {
               window.speechSynthesis.onvoiceschanged = loadVoices;
           }
       }
-
 
       // Quiz variables
       let currentQuestionIndex = 0;
@@ -788,7 +831,7 @@
             return;
           }
           poemOutputDiv.innerText = 'Generating your beautiful poem... please wait ✨';
-          const poemText = await generatePoemWithGemini(`Compose a ${tone} love poem for my special one, incorporating these ideas or feelings: "${ideas}". The poem should be heartfelt and around 4 to 8 lines long.`);
+          const poemText = await generatePoemWithGemini(`Compose a ${tone} love poem for my special one, incorporating these ideas or feelings: "${ideas}". The poem should be heartfelt and around 4 to 6 stanzas in length. Make it personal and touching.`);
           poemOutputDiv.innerText = poemText;
           createLoveIcons(generatePoemAndSpeakBtn);
 
@@ -836,6 +879,8 @@
           specialMessageModal.classList.remove('active');
         });
         musicButton.addEventListener('click', toggleMusic);
+        prevTrackBtn.addEventListener('click', () => changeTrack(-1));
+        nextTrackBtn.addEventListener('click', () => changeTrack(1));
         document.addEventListener('click', (e) => {
           if (!e.target.classList.contains('love-icon')) {
             createLoveIcons({ getBoundingClientRect: () => ({ left: e.clientX, top: e.clientY, width: 0, height: 0 }) });
@@ -854,11 +899,11 @@
         const heartSvgs = [
           `<svg viewBox="0 0 32 29.6"><path fill="CURRENT" d="M23.6,0C20.5,0,18,2.1,16,5.5C14,2.1,11.5,0,8.4,0C3.6,0,0,3.6,0,8.4
             c0,9.3,16,21.2,16,21.2s16-12,16-21.2C32,3.6,28.4,0,23.6,0z"/></svg>`,
-          `<svg viewBox="0 0 24 24"><path fill="CURRENT" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>`,
+          `<svg viewBox="0 0 24 24"><path fill="CURRENT" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>`
         ];
         const rect = element.getBoundingClientRect();
-        const x = rect.left + rect.width / 2 + window.scrollX; // Add scrollX for correct positioning
-        const y = rect.top + rect.height / 2 + window.scrollY; // Add scrollY
+        const x = rect.left + rect.width / 2 + window.scrollX;
+        const y = rect.top + rect.height / 2 + window.scrollY;
         for (let i = 0; i < 7; i++) {
           const loveIcon = document.createElement('div');
           loveIcon.className = 'love-icon';
@@ -897,7 +942,7 @@
       function updateLoveMeter() {
         const maxScore = quizQuestions.reduce((sum, q) => sum + Math.max(...q.answers.map(a => a.score)), 0);
         const percentage = (loveScore / maxScore) * 100;
-        loveMeterFill.style.width = `${Math.min(100, percentage)}%`; // Cap at 100%
+        loveMeterFill.style.width = `${Math.min(100, percentage)}%`;
       }
 
       function showQuizResult() {
@@ -921,8 +966,8 @@
       }
 
       async function generatePoemWithGemini(promptText) {
-        if (!GEMINI_API_KEY || GEMINI_API_KEY === 'AIzaSyCUtBfMSVgoQ_9MVP6ZM-5FQfyvZVx7bZ4') {
-            return "Error: API Key not configured. Please replace 'YOUR_ACTUAL_API_KEY_HERE' in the script.";
+        if (!GEMINI_API_KEY || GEMINI_API_KEY === 'YOUR_GEMINI_API_KEY') {
+            return "Error: API Key not configured. Please replace 'YOUR_GEMINI_API_KEY' in the script.";
         }
         const requestBody = {
           contents: [{ parts: [{ text: promptText }] }],
@@ -947,7 +992,7 @@
             console.error('Gemini API Error:', response.status, errorData);
             let userMessage = `Error ${response.status}: Failed to generate poem.`;
             if (errorData.error && errorData.error.message) {
-                userMessage += `\nDetails: ${errorData.error.message.substring(0, 200)}`; // Keep it brief
+                userMessage += `\nDetails: ${errorData.error.message.substring(0, 200)}`;
                  if (errorData.error.message.includes("API key not valid") || response.status === 403) {
                     userMessage += "\nPlease check your API Key and ensure the Generative Language API is enabled for your project with billing active.";
                  } else if (response.status === 400 && errorData.error.message.includes("models/")) {
@@ -970,7 +1015,6 @@
           }
           console.error('Unexpected Gemini API response structure:', data);
           return "Error: Could not extract poem from API response.";
-
         } catch (error) {
           console.error('Network/Fetch error for Gemini API:', error);
           return `Network Error: ${error.message}. Check connection & API key. See console.`;
@@ -979,167 +1023,293 @@
 
       function speakText(textToSpeak) {
         if ('speechSynthesis' in window) {
-            if (window.speechSynthesis.speaking) { // If already speaking, stop previous
+            if (window.speechSynthesis.speaking) {
                 window.speechSynthesis.cancel();
             }
             speechUtterance = new SpeechSynthesisUtterance(textToSpeak);
-            speechUtterance.lang = 'en-US'; // Default language
-            // Try to find a female voice (highly browser/OS dependent)
+            speechUtterance.lang = 'en-US';
             const femaleVoice = voices.find(voice =>
                 (voice.name.toLowerCase().includes('female') ||
-                 voice.name.toLowerCase().includes('zira') || // Common Windows female voice
-                 voice.name.toLowerCase().includes('samantha') || // Common macOS female voice
-                 voice.gender === 'female') && voice.lang.startsWith('en') // Ensure it's an English voice
+                 voice.name.toLowerCase().includes('zira') ||
+                 voice.name.toLowerCase().includes('samantha') ||
+                 voice.gender === 'female') && voice.lang.startsWith('en')
             );
             if (femaleVoice) {
                 speechUtterance.voice = femaleVoice;
-                speechUtterance.lang = femaleVoice.lang; // Use the voice's language
+                speechUtterance.lang = femaleVoice.lang;
             } else {
-                // Fallback if no specific female voice is found
                 const englishVoice = voices.find(voice => voice.lang.startsWith('en-'));
                 if (englishVoice) speechUtterance.voice = englishVoice;
             }
 
-            speechUtterance.onerror = (event) => {
-                console.error('SpeechSynthesisUtterance.onerror', event);
-                poemOutputDiv.innerText += "\n(Sorry, could not read the poem aloud: " + event.error + ")";
+            speechUtterance.rate = 0.9;
+            speechUtterance.pitch = 1.1;
+
+            speechUtterance.onstart = () => {
+                musicTitle.textContent = '🎙️ Speaking...';
+                if (!bgAudio.paused) {
+                    bgAudio.volume = 0.2;
+                }
             };
+
+            speechUtterance.onend = () => {
+                musicTitle.textContent = tracks[currentTrackIndex].title;
+                if (!bgAudio.paused) {
+                    bgAudio.volume = 1.0;
+                }
+                triggerConfetti();
+            };
+
             window.speechSynthesis.speak(speechUtterance);
         } else {
-            console.log('Speech synthesis not supported by this browser.');
-            poemOutputDiv.innerText += "\n(Speech synthesis not supported by this browser.)";
+            poemOutputDiv.innerText += "\n\n(Speech synthesis is not supported in this browser)";
         }
       }
 
+      function addOverlay(type, content) {
+        const overlay = document.createElement('div');
+        overlay.className = 'booth-overlay';
+
+        if (type === 'heart') {
+          overlay.classList.add('booth-heart');
+          overlay.textContent = content;
+        } else if (type === 'star') {
+          overlay.classList.add('booth-star');
+          overlay.textContent = content;
+        } else if (type === 'text') {
+          overlay.classList.add('booth-text');
+          overlay.textContent = content;
+          overlay.style.fontSize = '2rem';
+        }
+
+        overlay.style.left = `${Math.random() * 70}%`;
+        overlay.style.top = `${Math.random() * 70}%`;
+
+        makeDraggable(overlay);
+
+        boothContent.appendChild(overlay);
+        createLoveIcons(overlay);
+      }
+
+      function makeDraggable(element) {
+        let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+
+        element.onmousedown = dragMouseDown;
+        element.ontouchstart = dragTouchStart;
+
+        function dragMouseDown(e) {
+          e.preventDefault();
+          pos3 = e.clientX;
+          pos4 = e.clientY;
+          document.onmouseup = closeDragElement;
+          document.onmousemove = elementDrag;
+        }
+
+        function dragTouchStart(e) {
+          const touch = e.touches[0];
+          pos3 = touch.clientX;
+          pos4 = touch.clientY;
+          document.ontouchend = closeDragElement;
+          document.ontouchmove = elementTouchDrag;
+        }
+
+        function elementDrag(e) {
+          e.preventDefault();
+          pos1 = pos3 - e.clientX;
+          pos2 = pos4 - e.clientY;
+          pos3 = e.clientX;
+          pos4 = e.clientY;
+          element.style.top = (element.offsetTop - pos2) + "px";
+          element.style.left = (element.offsetLeft - pos1) + "px";
+        }
+
+        function elementTouchDrag(e) {
+          e.preventDefault();
+          const touch = e.touches[0];
+          pos1 = pos3 - touch.clientX;
+          pos2 = pos4 - touch.clientY;
+          pos3 = touch.clientX;
+          pos4 = touch.clientY;
+          element.style.top = (element.offsetTop - pos2) + "px";
+          element.style.left = (element.offsetLeft - pos1) + "px";
+        }
+
+        function closeDragElement() {
+          document.onmouseup = null;
+          document.onmousemove = null;
+          document.ontouchend = null;
+          document.ontouchmove = null;
+        }
+      }
+
+      function changeBackground() {
+        currentBackground = (currentBackground + 1) % boothBackgrounds.length;
+        document.querySelector('.booth-frame').style.background = boothBackgrounds[currentBackground];
+        createLoveIcons(changeBackgroundBtn);
+      }
 
       function initializeSlideshow() {
         const slides = document.querySelectorAll('.slide');
         let currentSlide = 0;
-        if (slides.length === 0) return;
-        slides[currentSlide].classList.add('active');
+
+        slides[0].classList.add('active');
+
         setInterval(() => {
           slides[currentSlide].classList.remove('active');
           currentSlide = (currentSlide + 1) % slides.length;
           slides[currentSlide].classList.add('active');
         }, 3000);
       }
-      function addOverlay(type, content) {
-        const overlay = document.createElement('div');
-        overlay.className = `booth-overlay booth-${type}`;
-        overlay.textContent = content;
-        overlay.style.left = `${Math.random() * (boothContent.offsetWidth - 60)}px`;
-        overlay.style.top = `${Math.random() * (boothContent.offsetHeight - 60)}px`;
-        overlay.style.fontSize = type === 'text' ? '1.2rem' : '2.2rem';
-        overlay.style.color = type === 'star' ? 'gold' : (type === 'heart' ? '#e91e63' : '#e91e63');
-        makeDraggable(overlay);
-        boothContent.appendChild(overlay);
-        createLoveIcons(overlay);
-      }
-      function makeDraggable(element) {
-        let posX = 0, posY = 0, startX, startY;
-        element.addEventListener('mousedown', startDragging);
-        element.addEventListener('touchstart', startDragging, {passive: false});
-        function startDragging(e) {
-          e.preventDefault();
-          const clientX = e.clientX || (e.touches && e.touches[0].clientX);
-          const clientY = e.clientY || (e.touches && e.touches[0].clientY);
-          startX = clientX - posX;
-          startY = clientY - posY;
-          document.addEventListener('mousemove', drag);
-          document.addEventListener('touchmove', drag, {passive: false});
-          document.addEventListener('mouseup', stopDragging);
-          document.addEventListener('touchend', stopDragging);
-        }
-        function drag(e) {
-          e.preventDefault();
-          const clientX = e.clientX || (e.touches && e.touches[0].clientX);
-          const clientY = e.clientY || (e.touches && e.touches[0].clientY);
-          posX = clientX - startX;
-          posY = clientY - startY;
-          const parentRect = element.parentElement.getBoundingClientRect();
-          const elRect = element.getBoundingClientRect();
 
-          if (posX < 0) posX = 0;
-          if (posY < 0) posY = 0;
-          if (posX + elRect.width > parentRect.width) posX = parentRect.width - elRect.width;
-          if (posY + elRect.height > parentRect.height) posY = parentRect.height - elRect.height;
-
-          element.style.left = `${posX}px`;
-          element.style.top = `${posY}px`;
-        }
-        function stopDragging() {
-          document.removeEventListener('mousemove', drag);
-          document.removeEventListener('touchmove', drag);
-          document.removeEventListener('mouseup', stopDragging);
-          document.removeEventListener('touchend', stopDragging);
-        }
-      }
-      function changeBackground() {
-        currentBackground = (currentBackground + 1) % boothBackgrounds.length;
-        boothContent.parentElement.style.background = boothBackgrounds[currentBackground];
-        createLoveIcons(changeBackgroundBtn);
-      }
-      function triggerConfetti() {
-        for (let i = 0; i < 70; i++) {
-          const confetti = {
-            x: Math.random() * confettiCanvas.width,
-            y: Math.random() * confettiCanvas.height - confettiCanvas.height,
-            size: Math.random() * 5 + 2,
-            speed: Math.random() * 3 + 2,
-            color: `hsl(${Math.random() * 360}, 100%, 60%)`,
-            angle: Math.random() * 360
-          };
-          confettiPieces.push(confetti);
-        }
-        if (!confettiAnimationId) animateConfetti();
-      }
-      function animateConfetti() {
-        confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
-        confettiPieces.forEach((confetti, index) => {
-          confetti.y += confetti.speed;
-          confetti.x += Math.sin(confetti.angle) * 0.5;
-          confetti.angle += 0.1;
-          confettiCtx.fillStyle = confetti.color;
-          confettiCtx.beginPath();
-          confettiCtx.arc(confetti.x, confetti.y, confetti.size, 0, Math.PI * 2);
-          confettiCtx.fill();
-          if (confetti.y > confettiCanvas.height) confettiPieces.splice(index, 1);
-        });
-        if (confettiPieces.length > 0) {
-          confettiAnimationId = requestAnimationFrame(animateConfetti);
-        } else {
-          confettiAnimationId = null;
-        }
-      }
-      function toggleMusic() {
-        if (bgAudio.paused) {
-          bgAudio.play().catch(e => {
-            console.warn("BG Audio play failed:", e);
-            musicTitle.textContent = 'BG Audio Play Failed';
-          });
-          musicButton.textContent = '❚❚';
-          musicTitle.textContent = 'Beqarar Yeh Dil ❤️';
-          musicTitle.classList.add('active');
-        } else {
-          bgAudio.pause();
-          musicButton.textContent = '♪';
-          musicTitle.classList.remove('active');
-        }
-        createLoveIcons(musicButton);
-      }
       function checkVisibility() {
-        const triggerBottom = window.innerHeight * 0.84;
+        const triggerPoint = window.innerHeight * 0.8;
+
         sections.forEach(section => {
           const sectionTop = section.getBoundingClientRect().top;
-          if (sectionTop < triggerBottom) section.classList.add('visible');
+          if (sectionTop < triggerPoint) {
+            section.classList.add('visible');
+          }
+        });
+
+        window.addEventListener('scroll', () => {
+          sections.forEach(section => {
+            const sectionTop = section.getBoundingClientRect().top;
+            if (sectionTop < triggerPoint) {
+              section.classList.add('visible');
+            }
+          });
         });
       }
-      window.addEventListener('scroll', checkVisibility);
+
+      function toggleMusic() {
+        if (bgAudio.paused) {
+          bgAudio.play().then(() => {
+            musicTitle.textContent = `Playing: ${tracks[currentTrackIndex].title}`;
+            musicButton.textContent = '❚❚';
+            createLoveIcons(musicButton);
+          }).catch(err => {
+            console.error(`Music playback error for ${tracks[currentTrackIndex].title}:`, err);
+            musicTitle.textContent = 'Playback Error';
+            setTimeout(() => {
+              musicTitle.textContent = tracks[currentTrackIndex].title;
+            }, 3000);
+          });
+        } else {
+          bgAudio.pause();
+          musicTitle.textContent = tracks[currentTrackIndex].title;
+          musicButton.textContent = '♪';
+        }
+      }
+
+      function changeTrack(direction) {
+        bgAudio.pause();
+        currentTrackIndex = (currentTrackIndex + direction + tracks.length) % tracks.length;
+        bgAudio = new Audio(tracks[currentTrackIndex].url);
+        bgAudio.loop = true;
+        bgAudio.onerror = () => {
+          musicTitle.textContent = `${tracks[currentTrackIndex].title} Unavailable`;
+          console.warn(`Audio playback error for ${tracks[currentTrackIndex].title}. Check network or URL.`);
+          setTimeout(() => {
+            musicTitle.textContent = tracks[currentTrackIndex].title;
+          }, 3000);
+        };
+        musicTitle.textContent = tracks[currentTrackIndex].title;
+        musicButton.textContent = '♪';
+        if (!bgAudio.paused) {
+          toggleMusic();
+        }
+      }
+
+      function triggerConfetti() {
+        if (confettiAnimationId) {
+          cancelAnimationFrame(confettiAnimationId);
+          confettiPieces.length = 0;
+        }
+
+        for (let i = 0; i < 150; i++) {
+          confettiPieces.push({
+            x: Math.random() * window.innerWidth,
+            y: -20 - Math.random() * 100,
+            size: 3 + Math.random() * 7,
+            color: [
+              '#e91e63', '#ff9a9e', '#fad0c4', '#fbc2eb',
+              '#a6c1ee', '#ffb6b9', '#f67280', '#c2185b',
+              '#f8bbd0', '#ffecd2', '#fcb69f'
+            ][Math.floor(Math.random() * 11)],
+            speed: 1 + Math.random() * 5,
+            angle: Math.random() * 2 * Math.PI,
+            rotation: Math.random() * 0.2 - 0.1,
+            rotationSpeed: Math.random() * 0.01 - 0.005
+          });
+        }
+
+        animateConfetti();
+      }
+
+      function animateConfetti() {
+        confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+
+        let stillActive = false;
+
+        confettiPieces.forEach(piece => {
+          piece.y += piece.speed;
+          piece.x += Math.sin(piece.angle) * 2;
+          piece.angle += piece.rotation;
+
+          if (piece.y < window.innerHeight + 50) {
+            stillActive = true;
+
+            confettiCtx.save();
+            confettiCtx.translate(piece.x, piece.y);
+            confettiCtx.rotate(piece.angle);
+            confettiCtx.fillStyle = piece.color;
+            confettiCtx.fillRect(-piece.size / 2, -piece.size / 2, piece.size, piece.size);
+            confettiCtx.restore();
+          }
+        });
+
+        if (stillActive) {
+          confettiAnimationId = requestAnimationFrame(animateConfetti);
+        } else {
+          cancelAnimationFrame(confettiAnimationId);
+          confettiPieces.length = 0;
+        }
+      }
+
+      setTimeout(() => {
+        specialMessageModal.classList.add('active');
+        const modalContent = document.querySelector('.modal-content');
+        const dateElement = document.createElement('p');
+        dateElement.className = 'modal-text';
+        dateElement.style.fontSize = '0.85rem';
+        dateElement.style.color = '#888';
+        dateElement.innerHTML = `Created for you on ${new Date().toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        })}`;
+
+        const createdByElement = document.createElement('p');
+        createdByElement.className = 'modal-text';
+        createdByElement.style.fontSize = '0.85rem';
+        createdByElement.style.color = '#888';
+        createdByElement.innerHTML = `Made with love by ppspro`;
+
+        modalContent.appendChild(dateElement);
+        modalContent.appendChild(createdByElement);
+
+        const footerText = document.querySelector('.footer-text');
+        footerText.innerHTML += `<br><span style="font-size:0.9rem;color:#777">Last updated: 2025-05-11</span>`;
+      }, 2500);
+
       window.addEventListener('resize', () => {
         confettiCanvas.width = window.innerWidth;
         confettiCanvas.height = window.innerHeight;
       });
     });
   </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93e1689cec56bf81',t:'MTc0Njk2MzcwMS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 </body>
 </html>
