@@ -1,43 +1,4 @@
-<script type="text/javascript">
-        var gk_isXlsx = false;
-        var gk_xlsxFileLookup = {};
-        var gk_fileData = {};
-        function filledCell(cell) {
-          return cell !== '' && cell != null;
-        }
-        function loadFileData(filename) {
-        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
-            try {
-                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
-                var firstSheetName = workbook.SheetNames[0];
-                var worksheet = workbook.Sheets[firstSheetName];
-
-                // Convert sheet to JSON to filter blank rows
-                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-                // Filter out blank rows (rows where all cells are empty, null, or undefined)
-                var filteredData = jsonData.filter(row => row.some(filledCell));
-
-                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
-                var headerRowIndex = filteredData.findIndex((row, index) =>
-                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
-                );
-                // Fallback
-                if (headerRowIndex === -1 || headerRowIndex > 25) {
-                  headerRowIndex = 0;
-                }
-
-                // Convert filtered JSON back to CSV
-                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
-                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
-                return csv;
-            } catch (e) {
-                console.error(e);
-                return "";
-            }
-        }
-        return gk_fileData[filename] || "";
-        }
-        </script><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -324,6 +285,7 @@
     .slide {
       position: absolute; top: 0; left: 0; width: 100%; height: 100%;
       object-fit: cover; opacity: 0; transition: opacity 1.2s cubic-bezier(.4,2.1,.5,1);
+      cursor: pointer;
     }
     .slide.active { opacity: 1;}
     .booth-overlay { position: absolute; cursor: move; user-select: none; z-index: 10;}
@@ -420,6 +382,33 @@
       text-align: center;
     }
     .modal-text { font-size: 1.13rem; line-height: 1.62; margin-bottom: 14px;}
+    /* --- Full-Screen Image Modal --- */
+    .image-modal {
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.85); display: flex; justify-content: center; align-items: center;
+      z-index: 2500; opacity: 0; visibility: hidden; transition: all 0.3s;
+    }
+    .image-modal.active { opacity: 1; visibility: visible;}
+    .image-modal-content {
+      max-width: 90vw; max-height: 90vh; display: flex; justify-content: center; align-items: center;
+      position: relative; transform: scale(0.7); transition: transform 0.3s;
+    }
+    .image-modal.active .image-modal-content { transform: scale(1);}
+    .image-modal-img {
+      max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 10px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    }
+    .image-modal-close {
+      position: absolute; top: -30px; right: -30px;
+      font-size: 2rem; background: #e91e63; color: white; border: none;
+      border-radius: 50%; width: 40px; height: 40px; cursor: pointer;
+      display: flex; justify-content: center; align-items: center;
+      transition: background 0.2s;
+    }
+    .image-modal-close:hover { background: #c2185b;}
+    @media (max-width: 600px) {
+      .image-modal-close { top: -20px; right: -20px; font-size: 1.5rem; width: 30px; height: 30px;}
+    }
     /* --- Music Player --- */
     .music-player {
       position: fixed; bottom: 25px; right: 26px; z-index: 300;
@@ -495,7 +484,7 @@
       margin-top: 50px;
     }
     .footer-text { font-size: 1.04rem; color: #666;}
-    .heart-icon { color: #e91e63; animation: pulse 1.5s infinite;}
+    .heart-icon { color: #e91e  color: #e91e63; animation: pulse 1.5s infinite;}
   </style>
 </head>
 <body>
@@ -529,8 +518,7 @@
             <div class="memory-title">Our First Meeting</div>
           </div>
           <div class="memory-card" data-date="2023-03-20">
-            <img class="memory-img" src="https://i.ibb.co/DfLM5Pxt/Pi7-Image-Cropper.webp"
-            alt="Special Moment">
+            <img class="memory-img" src="https://i.ibb.co/DfLM5Pxt/Pi7-Image-Cropper.webp" alt="Special Moment">
             <div class="memory-title">That Special Moment</div>
           </div>
           <div class="memory-card" data-date="2023-04-15">
@@ -542,13 +530,11 @@
             <div class="memory-title">Under the Stars</div>
           </div>
           <div class="memory-card" data-date="2023-07-15">
-            <img class="memory-img" src="https://i.ibb.co/HLfdFqrG/40224161-2-1-hersheys-exotic-dark-chocolate-californian-almonds-with-guava-mexican-chilli-flavour.png" 
-            alt="Birthday Surprise">
+            <img class="memory-img" src="https://i.ibb.co/HLfdFqrG/40224161-2-1-hersheys-exotic-dark-chocolate-californian-almonds-with-guava-mexican-chilli-flavour.png" alt="Birthday Surprise">
             <div class="memory-title">Birthday Surprise</div>
           </div>
           <div class="memory-card" data-date="2023-09-22">
-            <img class="memory-img" src="https://i.ibb.co/FMBRjQm/Chat-GPTImage-May11202506-49-36-PM.jpg" 
-            alt="Coffee Date">
+            <img class="memory-img" src="https://i.ibb.co/FMBRjQm/Chat-GPTImage-May11202506-49-36-PM.jpg" alt="Coffee Date">
             <div class="memory-title">Coffee Date</div>
           </div>
           <div class="memory-card" data-date="2023-10-10">
@@ -585,7 +571,7 @@
           </div>
           <div class="secret-message-composer">
             <h3>Craft a Love Poem</h3>
-            <p>Enter a few words or ideas, and let AI help you express your deepest feelings. Then, it will be read aloud!</p>
+            <p>Enter a few words or ideas, and let us create a heartfelt poem for you. Then, it will be read aloud!</p>
             <textarea id="poem-ideas" placeholder="Your Ideas & Feelings... e.g., 'our walks in the park, your laughter'"></textarea>
             <select id="poem-tone">
               <option value="romantic">Romantic</option>
@@ -609,7 +595,7 @@
           <div class="booth-frame">
             <div class="booth-content" id="booth-content">
               <div class="slideshow-container">
-                 <img class="slide" src="https://i.ibb.co/YTP5YLfc/IMG-20250329-WA0005.jpg" alt="Memory 1">
+                <img class="slide" src="https://i.ibb.co/YTP5YLfc/IMG-20250329-WA0005.jpg" alt="Memory 1">
                 <img class="slide" src="https://i.ibb.co/yF55HG5J/IMG-20250329-WA0013.jpg" alt="Memory 2">
                 <img class="slide" src="https://i.ibb.co/dJcj4VB0/IMG-20250329-WA0002.jpg" alt="Memory 3">
                 <img class="slide" src="https://i.ibb.co/350rtb9S/photo-2025-05-11-17-53-34.jpg" alt="Memory 4">
@@ -618,8 +604,7 @@
                 <img class="slide" src="https://images.unsplash.com/photo-1518621736915-f3b1c41bfd00" alt="Memory 7">
                 <img class="slide" src="https://i.ibb.co/JFnq3g1h/IMG-20250330-WA0001.jpg" alt="Memory 8">
                 <img class="slide" src="https://i.ibb.co/VcG1pkXB/photo-2025-05-11-17-51-34.jpg" alt="Memory 9">
-                <img class="slide" src="https://i.ibb.co/FkT4H8Dv/image-1746938718780.jpg" 
-                alt="Memory 10">
+                <img class="slide" src="https://i.ibb.co/FkT4H8Dv/image-1746938718780.jpg" alt="Memory 10">
               </div>
             </div>
           </div>
@@ -662,7 +647,7 @@
   </section>
   <footer class="footer">
     <div class="container">
-      <p class="footer-text">Made with <span class="heart-icon">❤️</span> by Pabani Prasad Satapathy especially for you</p>
+      <p class="footer-text">Made with <span class="heart-icon">❤️</span> by Pabani Prasad Satapathy especially for you<br>Last updated: 2025-05-15 01:14 PM IST</p>
     </div>
   </footer>
   <div class="modal" id="special-message-modal">
@@ -675,6 +660,12 @@
       <p class="modal-text">Forever yours, ❤️</p>
     </div>
   </div>
+  <div class="image-modal" id="image-modal">
+    <div class="image-modal-content">
+      <img class="image-modal-img" id="full-image" src="" alt="Full-size image">
+      <button class="image-modal-close" id="image-modal-close">×</button>
+    </div>
+  </div>
   <div class="music-player">
     <span class="music-title" id="music-title">Beqarar Yeh Dil</span>
     <button class="track-button" id="prev-track">⏮</button>
@@ -682,7 +673,7 @@
     <button class="track-button" id="next-track">⏭</button>
   </div>
   <script>
-    // Quiz questions as provided
+    // Quiz questions
     const quizQuestions = [
       {
         question: "What makes a perfect day for us?",
@@ -718,13 +709,6 @@
       }
     ];
 
-    // --- Gemini API Configuration ---
-    // WARNING: Exposing API keys in client-side code is insecure for public websites.
-    // Replace with your actual Gemini API key and consider moving to a backend proxy for production.
-    const GEMINI_API_KEY = 'AIzaSyBdx_Am1Jr6jyADGui2UZFOD-buWFro_0'; // <<< Replace with your actual Gemini API key and secure it
-    const MODEL_NAME = "gemini-1.5-flash-latest"; // Or "gemini-1.0-pro" if flash isn't working for you
-    const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${GEMINI_API_KEY}`;
-
     document.addEventListener('DOMContentLoaded', function() {
       // DOM elements
       const scrollDown = document.querySelector('.scroll-down');
@@ -751,6 +735,9 @@
       const letterBlocks = document.querySelectorAll('.letter-block');
       const specialMessageModal = document.getElementById('special-message-modal');
       const modalClose = document.getElementById('modal-close');
+      const imageModal = document.getElementById('image-modal');
+      const fullImage = document.getElementById('full-image');
+      const imageModalClose = document.getElementById('image-modal-close');
       const musicButton = document.getElementById('music-button');
       const musicTitle = document.getElementById('music-title');
       const prevTrackBtn = document.getElementById('prev-track');
@@ -785,6 +772,10 @@
         {
           url: 'https://downloadwap.com/content3/mp3tones/rtones/new/bollywood/kabhi_kabhi_aditi_zindagi-119629.mp3',
           title: 'kabhi_kabhi_aditi_'
+        },
+        {
+          url: 'https://ppsatapathy.github.io/music/128-Zara%20Zara%20-%20Rehnaa%20Hai%20Terre%20Dil%20Mein%20128%20Kbps.mp3',
+          title: 'Zara Zara'
         }
       ];
       let currentTrackIndex = 0;
@@ -846,7 +837,13 @@
 
       function initializeEventListeners() {
         scrollDown.addEventListener('click', () => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' }));
-        memoryCards.forEach(card => card.addEventListener('click', () => createLoveIcons(card)));
+        memoryCards.forEach(card => {
+          card.addEventListener('click', () => {
+            createLoveIcons(card);
+            const img = card.querySelector('.memory-img');
+            showFullImage(img.src, img.alt);
+          });
+        });
         nextQuestionBtn.addEventListener('click', () => {
           if (selectedAnswer !== null) {
             loveScore += selectedAnswer;
@@ -861,7 +858,7 @@
           }
         });
 
-        generatePoemAndSpeakBtn.addEventListener('click', async () => {
+        generatePoemAndSpeakBtn.addEventListener('click', () => {
           const ideas = document.getElementById('poem-ideas').value;
           const tone = document.getElementById('poem-tone').value;
           if (!ideas.trim()) {
@@ -869,13 +866,13 @@
             return;
           }
           poemOutputDiv.innerText = 'Generating your beautiful poem... please wait ✨';
-          const poemText = await generatePoemWithGemini(`Compose a ${tone} love poem for my special one, incorporating these ideas or feelings: "${ideas}". The poem should be heartfelt and around 4 to 6 stanzas in length. Make it personal and touching.`);
+          const poemText = generatePoem(ideas, tone);
           poemOutputDiv.innerText = poemText;
           createLoveIcons(generatePoemAndSpeakBtn);
 
           if (poemText && !poemText.toLowerCase().startsWith("error")) {
             speakText(poemText);
-          } else if (poemText.toLowerCase().startsWith("error")) {
+          } else {
             console.warn("Poem generation failed, not attempting to speak.");
           }
         });
@@ -916,6 +913,15 @@
         modalClose.addEventListener('click', () => {
           specialMessageModal.classList.remove('active');
         });
+        imageModalClose.addEventListener('click', () => {
+          imageModal.classList.remove('active');
+        });
+        boothContent.addEventListener('click', (e) => {
+          const activeSlide = boothContent.querySelector('.slide.active');
+          if (e.target === activeSlide) {
+            showFullImage(activeSlide.src, activeSlide.alt);
+          }
+        });
         musicButton.addEventListener('click', toggleMusic);
         prevTrackBtn.addEventListener('click', () => changeTrack(-1));
         nextTrackBtn.addEventListener('click', () => changeTrack(1));
@@ -928,6 +934,81 @@
           const touch = e.touches[0];
           createLoveIcons({ getBoundingClientRect: () => ({ left: touch.clientX, top: touch.clientY, width: 0, height: 0 }) });
         }, {passive: true});
+      }
+
+      function showFullImage(src, alt) {
+        fullImage.src = src;
+        fullImage.alt = alt;
+        imageModal.classList.add('active');
+        createLoveIcons(imageModal);
+      }
+
+      function generatePoem(ideas, tone) {
+        const words = ideas.split(',').map(word => word.trim()).filter(word => word);
+        if (words.length === 0) {
+          return "Error: Please provide some ideas to generate the poem.";
+        }
+
+        const toneTemplates = {
+          'romantic': {
+            lines: [
+              "My heart whispers {word1}, in the quiet of the night,",
+              "Your {word2} lights my world, so pure and bright.",
+              "With every {word3}, our love does softly grow,",
+              "In your embrace, my darling, my dreams all seem to flow.",
+              "Forever bound by {word4}, our hearts will never part,",
+              "You are my {word5}, my love, my endless heart."
+            ],
+            fallbackWords: ['love', 'smile', 'moment', 'passion', 'treasure']
+          },
+          'playful': {
+            lines: [
+              "With {word1} we dance, under the sun so wide,",
+              "Your {word2} makes me laugh, you're my joyride.",
+              "Chasing {word3} together, oh what a silly spree,",
+              "Your giggles and {word4}, mean the world to me.",
+              "Let's skip through {word5}, with hearts so light and free,",
+              "My playful love, you're my sweetest fantasy."
+            ],
+            fallbackWords: ['fun', 'giggle', 'adventures', 'tease', 'moments']
+          },
+          'deeply emotional': {
+            lines: [
+              "In {word1}, my soul finds its deepest call,",
+              "Your {word2} holds me, through rise and fall.",
+              "With {word3}, my heart weeps in silent grace,",
+              "Your love, my {word4}, is my sacred space.",
+              "Through every {word5}, our bond will never fade,",
+              "My eternal love, in your arms, I'm unafraid."
+            ],
+            fallbackWords: ['tears', 'strength', 'pain', 'haven', 'storm']
+          },
+          'gentle and sweet': {
+            lines: [
+              "Your {word1} is a whisper, soft and so sincere,",
+              "With {word2}, my heart feels you ever near.",
+              "In moments of {word3}, your kindness lights the way,",
+              "Your gentle {word4}, brightens up my day.",
+              "Together in {word5}, our love will softly bloom,",
+              "My sweetest one, you chase away all gloom."
+            ],
+            fallbackWords: ['touch', 'warmth', 'calm', 'smile', 'peace']
+          }
+        };
+
+        const selectedTemplate = toneTemplates[tone] || toneTemplates['romantic'];
+        let poemLines = selectedTemplate.lines;
+        const usedWords = words.slice(0, 5);
+        while (usedWords.length < 5) {
+          usedWords.push(selectedTemplate.fallbackWords[usedWords.length % selectedTemplate.fallbackWords.length]);
+        }
+
+        let poem = '';
+        poemLines.forEach((line, index) => {
+          poem += line.replace(`{word${index + 1}}`, usedWords[index]) + '\n';
+        });
+
+        return poem;
       }
 
       function createLoveIcons(element) {
@@ -1001,62 +1082,6 @@
         resultTitle.textContent = title;
         resultMessage.textContent = message;
         triggerConfetti();
-      }
-
-      async function generatePoemWithGemini(promptText) {
-        if (!GEMINI_API_KEY || GEMINI_API_KEY === 'YOUR_GEMINI_API_KEY') {
-            return "Error: API Key not configured. Please replace 'YOUR_GEMINI_API_KEY' in the script.";
-        }
-        const requestBody = {
-          contents: [{ parts: [{ text: promptText }] }],
-          generationConfig: { temperature: 0.7, maxOutputTokens: 250 },
-          safetySettings: [
-             { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
-             { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
-             { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
-             { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_MEDIUM_AND_ABOVE" }
-          ]
-        };
-
-        try {
-          const response = await fetch(GEMINI_API_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(requestBody),
-          });
-
-          if (!response.ok) {
-            const errorData = await response.json().catch(() => ({ error: { message: "Failed to parse error response from API."}}));
-            console.error('Gemini API Error:', response.status, errorData);
-            let userMessage = `Error ${response.status}: Failed to generate poem.`;
-            if (errorData.error && errorData.error.message) {
-                userMessage += `\nDetails: ${errorData.error.message.substring(0, 200)}`;
-                 if (errorData.error.message.includes("API key not valid") || response.status === 403) {
-                    userMessage += "\nPlease check your API Key and ensure the Generative Language API is enabled for your project with billing active.";
-                 } else if (response.status === 400 && errorData.error.message.includes("models/")) {
-                     userMessage += `\nThe model '${MODEL_NAME}' might not be available or compatible. Try 'gemini-1.0-pro'.`;
-                 }
-            }
-            return userMessage;
-          }
-
-          const data = await response.json();
-
-          if (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts && data.candidates[0].content.parts[0]) {
-            return data.candidates[0].content.parts[0].text;
-          } else if (data.candidates && data.candidates[0] && data.candidates[0].finishReason) {
-            if (data.candidates[0].finishReason === "SAFETY") return "Poem blocked for safety reasons. Please try different ideas.";
-            if (data.candidates[0].finishReason === "MAX_TOKENS") return (data.candidates[0].content.parts[0].text || "") + "\n...(Poem truncated)";
-            return `Poem generation ended: ${data.candidates[0].finishReason}. No content.`;
-          } else if (data.promptFeedback && data.promptFeedback.blockReason) {
-             return `Prompt blocked: ${data.promptFeedback.blockReason}. Try rephrasing.`;
-          }
-          console.error('Unexpected Gemini API response structure:', data);
-          return "Error: Could not extract poem from API response.";
-        } catch (error) {
-          console.error('Network/Fetch error for Gemini API:', error);
-          return `Network Error: ${error.message}. Check connection & API key. See console.`;
-        }
       }
 
       function speakText(textToSpeak) {
@@ -1182,7 +1207,7 @@
 
       function changeBackground() {
         currentBackground = (currentBackground + 1) % boothBackgrounds.length;
-        document.querySelector('.booth-frame').style.background = boothBackgrounds[currentBackground];
+        boothContent.style.background = boothBackgrounds[currentBackground];
         createLoveIcons(changeBackgroundBtn);
       }
 
@@ -1190,51 +1215,45 @@
         const slides = document.querySelectorAll('.slide');
         let currentSlide = 0;
 
-        slides[0].classList.add('active');
+        function showSlide(index) {
+          slides.forEach((slide, i) => {
+            slide.classList.toggle('active', i === index);
+          });
+        }
 
-        setInterval(() => {
-          slides[currentSlide].classList.remove('active');
+        function nextSlide() {
           currentSlide = (currentSlide + 1) % slides.length;
-          slides[currentSlide].classList.add('active');
-        }, 3000);
+          showSlide(currentSlide);
+        }
+
+        showSlide(currentSlide);
+        setInterval(nextSlide, 5000);
       }
 
       function checkVisibility() {
-        const triggerPoint = window.innerHeight * 0.8;
-
-        sections.forEach(section => {
-          const sectionTop = section.getBoundingClientRect().top;
-          if (sectionTop < triggerPoint) {
-            section.classList.add('visible');
-          }
-        });
-
-        window.addEventListener('scroll', () => {
-          sections.forEach(section => {
-            const sectionTop = section.getBoundingClientRect().top;
-            if (sectionTop < triggerPoint) {
-              section.classList.add('visible');
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
             }
           });
-        });
+        }, { threshold: 0.1 });
+
+        sections.forEach(section => observer.observe(section));
       }
 
       function toggleMusic() {
         if (bgAudio.paused) {
-          bgAudio.play().then(() => {
-            musicTitle.textContent = `Playing: ${tracks[currentTrackIndex].title}`;
-            musicButton.textContent = '❚❚';
-            createLoveIcons(musicButton);
-          }).catch(err => {
-            console.error(`Music playback error for ${tracks[currentTrackIndex].title}:`, err);
+          bgAudio.play().catch(err => {
+            console.warn('Audio playback failed:', err);
             musicTitle.textContent = 'Playback Error';
             setTimeout(() => {
               musicTitle.textContent = tracks[currentTrackIndex].title;
             }, 3000);
           });
+          musicButton.textContent = '⏸';
         } else {
           bgAudio.pause();
-          musicTitle.textContent = tracks[currentTrackIndex].title;
           musicButton.textContent = '♪';
         }
       }
@@ -1244,6 +1263,8 @@
         currentTrackIndex = (currentTrackIndex + direction + tracks.length) % tracks.length;
         bgAudio = new Audio(tracks[currentTrackIndex].url);
         bgAudio.loop = true;
+        musicTitle.textContent = tracks[currentTrackIndex].title;
+
         bgAudio.onerror = () => {
           musicTitle.textContent = `${tracks[currentTrackIndex].title} Unavailable`;
           console.warn(`Audio playback error for ${tracks[currentTrackIndex].title}. Check network or URL.`);
@@ -1251,96 +1272,67 @@
             musicTitle.textContent = tracks[currentTrackIndex].title;
           }, 3000);
         };
-        musicTitle.textContent = tracks[currentTrackIndex].title;
-        musicButton.textContent = '♪';
-        if (!bgAudio.paused) {
-          toggleMusic();
+
+        if (!musicButton.textContent.includes('♪')) {
+          bgAudio.play().catch(err => {
+            console.warn('Audio playback failed:', err);
+            musicTitle.textContent = 'Playback Error';
+            setTimeout(() => {
+              musicTitle.textContent = tracks[currentTrackIndex].title;
+            }, 3000);
+          });
         }
       }
 
       function triggerConfetti() {
-        if (confettiAnimationId) {
-          cancelAnimationFrame(confettiAnimationId);
-          confettiPieces.length = 0;
-        }
+        const colors = ['#e91e63', '#ff9a9e', '#fad0c4', '#fbc2eb', '#a6c1ee'];
+        const confettiCount = 100;
 
-        for (let i = 0; i < 150; i++) {
+        for (let i = 0; i < confettiCount; i++) {
           confettiPieces.push({
-            x: Math.random() * window.innerWidth,
-            y: -20 - Math.random() * 100,
-            size: 3 + Math.random() * 7,
-            color: [
-              '#e91e63', '#ff9a9e', '#fad0c4', '#fbc2eb',
-              '#a6c1ee', '#ffb6b9', '#f67280', '#c2185b',
-              '#f8bbd0', '#ffecd2', '#fcb69f'
-            ][Math.floor(Math.random() * 11)],
-            speed: 1 + Math.random() * 5,
-            angle: Math.random() * 2 * Math.PI,
-            rotation: Math.random() * 0.2 - 0.1,
-            rotationSpeed: Math.random() * 0.01 - 0.005
+            x: Math.random() * confettiCanvas.width,
+            y: Math.random() * confettiCanvas.height,
+            size: Math.random() * 10 + 5,
+            speedX: Math.random() * 6 - 3,
+            speedY: Math.random() * 6 - 3,
+            color: colors[Math.floor(Math.random() * colors.length)],
+            rotation: Math.random() * 360,
+            rotationSpeed: Math.random() * 10 - 5
           });
         }
 
-        animateConfetti();
-      }
-
-      function animateConfetti() {
-        confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
-
-        let stillActive = false;
-
-        confettiPieces.forEach(piece => {
-          piece.y += piece.speed;
-          piece.x += Math.sin(piece.angle) * 2;
-          piece.angle += piece.rotation;
-
-          if (piece.y < window.innerHeight + 50) {
-            stillActive = true;
+        function animateConfetti() {
+          confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+          confettiPieces.forEach((piece, index) => {
+            piece.x += piece.speedX;
+            piece.y += piece.speedY;
+            piece.rotation += piece.rotationSpeed;
+            piece.size *= 0.98;
 
             confettiCtx.save();
             confettiCtx.translate(piece.x, piece.y);
-            confettiCtx.rotate(piece.angle);
+            confettiCtx.rotate(piece.rotation * Math.PI / 180);
             confettiCtx.fillStyle = piece.color;
             confettiCtx.fillRect(-piece.size / 2, -piece.size / 2, piece.size, piece.size);
             confettiCtx.restore();
-          }
-        });
 
-        if (stillActive) {
-          confettiAnimationId = requestAnimationFrame(animateConfetti);
-        } else {
-          cancelAnimationFrame(confettiAnimationId);
-          confettiPieces.length = 0;
+            if (piece.size < 1) {
+              confettiPieces.splice(index, 1);
+            }
+          });
+
+          if (confettiPieces.length > 0) {
+            confettiAnimationId = requestAnimationFrame(animateConfetti);
+          } else {
+            cancelAnimationFrame(confettiAnimationId);
+            confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+          }
+        }
+
+        if (!confettiAnimationId) {
+          animateConfetti();
         }
       }
-
-      setTimeout(() => {
-        specialMessageModal.classList.add('active');
-        const modalContent = document.querySelector('.modal-content');
-        const dateElement = document.createElement('p');
-        dateElement.className = 'modal-text';
-        dateElement.style.fontSize = '0.85rem';
-        dateElement.style.color = '#888';
-        dateElement.innerHTML = `Created for you on ${new Date().toLocaleDateString('en-US', {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric',
-          hour: '2-digit',
-          minute: '2-digit'
-        })}`;
-
-        const createdByElement = document.createElement('p');
-        createdByElement.className = 'modal-text';
-        createdByElement.style.fontSize = '0.85rem';
-        createdByElement.style.color = '#888';
-        createdByElement.innerHTML = `Made with love by ppspro`;
-
-        modalContent.appendChild(dateElement);
-        modalContent.appendChild(createdByElement);
-
-        const footerText = document.querySelector('.footer-text');
-        footerText.innerHTML += `<br><span style="font-size:0.9rem;color:#777">Last updated: 2025-05-11</span>`;
-      }, 2500);
 
       window.addEventListener('resize', () => {
         confettiCanvas.width = window.innerWidth;
@@ -1348,6 +1340,5 @@
       });
     });
   </script>
-  <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93e1689cec56bf81',t:'MTc0Njk2MzcwMS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 </body>
 </html>
